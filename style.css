@@ -1,4 +1,14 @@
-.grid-container {
-    display: grid;
-    grid-column-gap: 50px;
+.bottomCellGpa {
+    border-radius: 3px;
+    background-color: lightblue;
+    vertical-align: middle;
+    -webkit-box-shadow: 6px 6px 3px -3px rgba(0,0,0,0.37); 
+    box-shadow: 6px 6px 3px -3px rgba(0,0,0,0.37);
+    width: 400px;
+}
+.gpactrlcontainer input {
+    margin: 10px 5px 0px 8px;
+}
+.gpactrlcontainer label {
+    margin-left: 10px;
 }
