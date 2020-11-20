@@ -14,18 +14,22 @@ gpaResultsBox.appendChild(gpaTitle);
 gpaResultsBox.appendChild(gpaText);
 
 document.querySelector(".col-sm-5").appendChild(gpaResultsBox);
-function updateCount() {
+
+function updateCount () {
     var numerator = 0;
     var denominator = 0;
-
     for (i = 0; i < results.length; i++) {
         let course = results[i];
         numerator += course.gradeFactor * course.credits;
         denominator += course.credits;
     }   
     let gpa = numerator/denominator;
-    gpaText.innerHTML = "~ " + gpa.toFixed(2);
+    gpaText.innerHTML = "~ " + gpa.toFixed(3);
 }
+
+document.arrive(".col-sm-5", function() {
+    this.appendChild(gpaResultsBox);
+});
 
 document.arrive("ladok-avslutad-kurs .card-body", function() {
     const courseStrings = this.querySelector(".ldk-visa-desktop > a").innerText.split("|");
@@ -64,6 +68,8 @@ document.arrive("ladok-avslutad-kurs .card-body", function() {
             break;
     }
 
+    let result = { courseCode, credits, gradeFactor };
+
     let table = document.createElement("div");
     table.classList.add("gpactrlcontainer");
 
@@ -92,22 +98,28 @@ document.arrive("ladok-avslutad-kurs .card-body", function() {
     // Actual checkbox
     let box = document.createElement("input");
     box.type = "checkbox";
+    box.id = courseCode;
     if (applicable) {
         box.checked = true;
-        let p = document.createElement("p")
-        p.innerText = "(Not applicable for GPA count)";
-        p.style.display = "inline";
-        results.push({ courseCode, credits, gradeFactor });
+        results.push(result);
         updateCount();
     } else {
         box.checked = false;
         box.disabled = true; 
         label.style.color = "grey";
         let p = document.createElement("p")
-        p.innerText = "(Not applicable for GPA count)";
+        p.innerText = "(Not applicable)";
         p.style.display = "inline";
         checkBox.appendChild(p);
     }
+    box.addEventListener("click", () => {
+        if (results.includes(result)) {
+            results = results.filter(function (e) {return e != result});
+        } else {
+            results.push(result);
+        }
+        updateCount();
+    });
     label.appendChild(box);
     this.appendChild(table);
 });
