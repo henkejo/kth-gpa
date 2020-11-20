@@ -2,14 +2,30 @@ console.log('KTH-gpa content script loaded!');
 
 var results = new Array;
 
+let gpaResultsBox = document.createElement("div");
+gpaResultsBox.classList.add("gpa-box");
+document.querySelector(".col-sm-5").appendChild(gpaResultsBox);
+function updateCount() {
+    var numerator = 0;
+    var denominator = 0;
+
+    for (i = 0; i < results.length; i++) {
+        let course = results[i];
+        numerator += course.gradeFactor * course.credits;
+        denominator += course.credits;
+    }   
+    let gpa = numerator/denominator;
+    gpaResultsBox.innerHTML = gpa;
+}
+
 document.arrive("ladok-avslutad-kurs .card-body", function() {
     const courseStrings = this.querySelector(".ldk-visa-desktop > a").innerText.split("|");
     const courseCode = courseStrings[2].split(" ")[1];
     const credits = Number(courseStrings[1].split(" ")[1]);
-    
     const grade = this.querySelector(".card-body  strong").innerText.split(" ")[1];
+
     let applicable = true;
-    let gradeScore;
+    let gradeFactor;
     switch (grade) {
         case "-":
             applicable = false;
@@ -18,31 +34,27 @@ document.arrive("ladok-avslutad-kurs .card-body", function() {
             applicable = false;
             break;
         case "F":
-            gradeScore = 0;
+            gradeFactor = 0;
             break;
         case "E":
-            gradeScore = 3;
+            gradeFactor = 3;
             break;
         case "D":
-            gradeScore = 3.5;
+            gradeFactor = 3.5;
             break;
         case "C":
-            gradeScore = 4;
+            gradeFactor = 4;
             break;
         case "B":
-            gradeScore = 4.5;
+            gradeFactor = 4.5;
             break;
         case "A":
-            gradeScore = 5;
+            gradeFactor = 5;
             break;
         default:
             break;
     }
-    console.log(gradeScore);
 
-    // This beautiful table holds:
-    // (1) completed course info on the top
-    // (2) and KTHgpa stuff on the bottom
     let table = document.createElement("div");
     table.classList.add("gpactrlcontainer");
 
@@ -50,13 +62,13 @@ document.arrive("ladok-avslutad-kurs .card-body", function() {
     topCellGpa.classList.add("topCellGpa");
     table.appendChild(topCellGpa);
 
-    // Transferring (1) into the table
     while (this.childNodes.length > 0) {
         topCellGpa.appendChild(this.firstChild);
     }
 
     let bottomCellGpa = document.createElement("div");
-    bottomCellGpa.classList.add("bottomCellGpa");
+    bottomCellGpa.classList.add("gpa-box");
+    bottomCellGpa.classList.add("gpa-completed-course-box");
     table.appendChild(bottomCellGpa);
     
     //  --- "Include in GPA count:"-checkbox
@@ -76,6 +88,8 @@ document.arrive("ladok-avslutad-kurs .card-body", function() {
         let p = document.createElement("p")
         p.innerText = "(Not applicable for GPA count)";
         p.style.display = "inline";
+        results.push({ courseCode, credits, gradeFactor });
+        updateCount();
     } else {
         box.checked = false;
         box.disabled = true; 
