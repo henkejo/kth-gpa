@@ -2,11 +2,13 @@
     "name": "KTHgpa",
     "version": "0.1",
     "description": "A GPA-calculator for KTH students",
+    "permissions": [
+        "activeTab"
+    ],
     "content_scripts": [
         {
             "matches": ["https://www.student.ladok.se/*"],
-            "run_at": "document_idle",
-            "js": ["contentScript.js"]
+            "js": ["arrive.min.js", "contentScript.js"]
         }
     ],
     "manifest_version": 2
