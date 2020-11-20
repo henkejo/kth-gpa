@@ -13,3 +13,7 @@
 .gpactrlcontainer input {
     margin: 10px 5px 0px 8px;
 }
+.gpa-title {
+    margin: 5px;
+    font-weight: bold;
+}

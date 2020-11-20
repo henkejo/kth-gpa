@@ -4,6 +4,15 @@ var results = new Array;
 
 let gpaResultsBox = document.createElement("div");
 gpaResultsBox.classList.add("gpa-box");
+gpaResultsBox.classList.add("gpa-results-box");
+let gpaTitle = document.createElement("p");
+gpaTitle.innerText = "GPA:";
+gpaTitle.classList.add("gpa-title");
+let gpaText = document.createElement("p");
+gpaText.innerText = "-";
+gpaResultsBox.appendChild(gpaTitle);
+gpaResultsBox.appendChild(gpaText);
+
 document.querySelector(".col-sm-5").appendChild(gpaResultsBox);
 function updateCount() {
     var numerator = 0;
@@ -15,7 +24,7 @@ function updateCount() {
         denominator += course.credits;
     }   
     let gpa = numerator/denominator;
-    gpaResultsBox.innerHTML = gpa;
+    gpaText.innerHTML = "~ " + gpa.toFixed(2);
 }
 
 document.arrive("ladok-avslutad-kurs .card-body", function() {
