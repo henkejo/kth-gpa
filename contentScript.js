@@ -13,8 +13,6 @@ gpaText.innerText = "-";
 gpaResultsBox.appendChild(gpaTitle);
 gpaResultsBox.appendChild(gpaText);
 
-document.querySelector(".col-sm-5").appendChild(gpaResultsBox);
-
 function updateCount () {
     var numerator = 0;
     var denominator = 0;
@@ -22,7 +20,7 @@ function updateCount () {
         let course = results[i];
         numerator += course.gradeFactor * course.credits;
         denominator += course.credits;
-    }   
+    }
     let gpa = numerator/denominator;
     gpaText.innerHTML = "~ " + gpa.toFixed(3);
 }
@@ -32,9 +30,11 @@ document.arrive(".col-sm-5", function() {
 });
 
 document.arrive("ladok-avslutad-kurs .card-body", function() {
+    document.querySelector(".col-sm-5").appendChild(gpaResultsBox);
     const courseStrings = this.querySelector(".ldk-visa-desktop > a").innerText.split("|");
     const courseCode = courseStrings[2].split(" ")[1];
-    const credits = Number(courseStrings[1].split(" ")[1]);
+    let credits = courseStrings[1].split(" ")[1];
+    credits = Number(credits.replace(',', '.'));
     const grade = this.querySelector(".card-body  strong").innerText.split(" ")[1];
 
     let applicable = true;
@@ -65,6 +65,7 @@ document.arrive("ladok-avslutad-kurs .card-body", function() {
             gradeFactor = 5;
             break;
         default:
+            applicable = false;
             break;
     }
 
