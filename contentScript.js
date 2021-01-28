@@ -2,6 +2,9 @@ console.log('KTH-gpa content script loaded!');
 
 var results = new Array;
 
+let leftDiv = document.createElement("div");
+leftDiv.classList.add("gpa-left-div");
+
 // Build results box
 let gpaResultsBox = document.createElement("div");
 gpaResultsBox.classList.add("gpa-box");
@@ -13,6 +16,32 @@ let gpaText = document.createElement("p");
 gpaText.innerText = "-";
 gpaResultsBox.appendChild(gpaTitle);
 gpaResultsBox.appendChild(gpaText);
+leftDiv.appendChild(gpaResultsBox);
+
+
+// Build other courses title box
+let otherCoursesTitleBox = document.createElement("div");
+otherCoursesTitleBox.classList.add("gpa-box");
+let customTitle = document.createElement("p");
+customTitle.innerText = "Add other courses:";
+customTitle.classList.add("gpa-title");
+otherCoursesTitleBox.appendChild(customTitle);
+leftDiv.appendChild(otherCoursesTitleBox);
+
+// Build other courses list div
+let otherCoursesListdiv = document.createElement("div");
+otherCoursesListdiv.id = "other-courses-list"
+otherCoursesTitleBox.appendChild(otherCoursesListdiv);
+
+// "Add" button
+let addCourseBtn = document.createElement("button");
+addCourseBtn.classList.add("gpa-add-course-btn");
+addCourseBtn.innerText = "Add";
+addCourseBtn.addEventListener("click", () => {
+    addCourse();
+});
+leftDiv.appendChild(addCourseBtn);
+
 
 function updateCount () {
     var numerator = 0;
@@ -26,11 +55,66 @@ function updateCount () {
     gpaText.innerHTML = "~ " + gpa.toFixed(3);
 }
 
+function addCourse () {
+    let otherCourseBox = document.createElement("div");
+    otherCourseBox.classList.add("gpa-box");
+    otherCourseBox.classList.add("gpa-other-course");
+
+    let table = document.createElement("table");
+
+    let headerRow = document.createElement("tr");
+        let ccHeaderCell = document.createElement("td");
+        let ccHeader = document.createElement("p");
+        ccHeader.innerText = "Course code:";
+        ccHeader.classList.add("gpa-title");
+        ccHeaderCell.append(ccHeader);
+        headerRow.appendChild(ccHeaderCell);
+
+        let creditsHeaderCell = document.createElement("td");
+        let creditsHeader = document.createElement("p");
+        creditsHeader.innerText = "Credits:";
+        creditsHeader.classList.add("gpa-title");
+        creditsHeaderCell.append(creditsHeader);
+        headerRow.appendChild(creditsHeaderCell);
+
+        let gradeHeaderCell = document.createElement("td");
+        let gradeHeader = document.createElement("p");
+        gradeHeader.innerText = "Grade:";
+        gradeHeader.classList.add("gpa-title");
+        gradeHeaderCell.append(gradeHeader);
+        headerRow.appendChild(gradeHeaderCell);
+
+        let includeHeaderCell = document.createElement("td");
+        let includeHeader = document.createElement("p");
+        includeHeader.innerText = "Include:";
+        includeHeader.classList.add("gpa-title");
+        includeHeaderCell.append(includeHeader);
+        headerRow.appendChild(includeHeaderCell);
+
+    let dataRow = document.createElement("tr");
+        let ccDataCell = document.createElement("td");
+        let ccData = document.createElement("input");
+        ccData.type = "text";
+        ccDataCell.append(ccData);
+        dataRow.appendChild(ccDataCell);
+
+    table.appendChild(headerRow);
+    table.appendChild(dataRow);
+    otherCourseBox.appendChild(table);
+
+    otherCoursesListdiv.appendChild(otherCourseBox);
+}
+
+
+// Re-adding elements when switching to another ladok tab and back
 document.arrive(".col-sm-5", function() {
-    this.appendChild(gpaResultsBox); // Make results box visible when navigated to the results page
+    this.appendChild(leftDiv);
 });
 
+// Adding readers for each course when they appear
 document.arrive("ladok-avslutad-kurs .card-body", function() {
+    document.querySelector(".col-sm-5").appendChild(leftDiv);
+
     const courseStrings = this.querySelector(".ldk-visa-desktop > a").innerText.split("|");
     const courseCode = courseStrings[2].split(" ")[1];
     let credits = courseStrings[1].split(" ")[1];
@@ -92,14 +176,17 @@ document.arrive("ladok-avslutad-kurs .card-body", function() {
     checkBox.classList.add("checkBox");
     checkBox.style.display = "inline";
     bottomCellGpa.appendChild(checkBox);
+
     // Checkbox label
     let label = document.createElement("label");
     label.innerText = "Include in GPA count:";
     checkBox.appendChild(label); 
+
     // Actual checkbox
     let box = document.createElement("input");
     box.type = "checkbox";
     box.id = courseCode;
+
     if (applicable) {
         box.checked = true;
         results.push(result);
@@ -113,6 +200,7 @@ document.arrive("ladok-avslutad-kurs .card-body", function() {
         p.style.display = "inline";
         checkBox.appendChild(p);
     }
+
     box.addEventListener("click", () => {
         if (results.includes(result)) {
             results = results.filter(function (e) {return e != result});
@@ -121,6 +209,7 @@ document.arrive("ladok-avslutad-kurs .card-body", function() {
         }
         updateCount();
     });
+    
     label.appendChild(box);
     this.appendChild(table);
 });

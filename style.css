@@ -2,8 +2,8 @@
     border-radius: 3px;
     background-color: lightblue;
     vertical-align: middle;
-    -webkit-box-shadow: 6px 6px 3px -3px rgba(0,0,0,0.37); 
-    box-shadow: 6px 6px 3px -3px rgba(0,0,0,0.37);
+    -webkit-box-shadow: 3px 3px 5px 1px rgba(0,0,0,0.37); 
+    box-shadow: 3px 3px 5px 1px rgba(0,0,0,0.37);
     padding: 5px 10px 5px 10px;
 }
 .gpa-completed-course-box {
@@ -16,4 +16,18 @@
 .gpa-title {
     margin: 5px;
     font-weight: bold;
+}
+.gpa-results-box {
+    margin-bottom: 20px;
+}
+.gpa-add-course-btn { 
+    padding: 5px;
+    margin: 5px;
+    float: right;
+    background-color: lightgreen;
+    border-radius: 10px;
+}
+.gpa-other-course {
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
