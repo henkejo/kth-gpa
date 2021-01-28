@@ -2,6 +2,7 @@ console.log('KTH-gpa content script loaded!');
 
 var results = new Array;
 
+// Build results box
 let gpaResultsBox = document.createElement("div");
 gpaResultsBox.classList.add("gpa-box");
 gpaResultsBox.classList.add("gpa-results-box");
@@ -26,11 +27,10 @@ function updateCount () {
 }
 
 document.arrive(".col-sm-5", function() {
-    this.appendChild(gpaResultsBox);
+    this.appendChild(gpaResultsBox); // Make results box visible when navigated to the results page
 });
 
 document.arrive("ladok-avslutad-kurs .card-body", function() {
-    document.querySelector(".col-sm-5").appendChild(gpaResultsBox);
     const courseStrings = this.querySelector(".ldk-visa-desktop > a").innerText.split("|");
     const courseCode = courseStrings[2].split(" ")[1];
     let credits = courseStrings[1].split(" ")[1];
