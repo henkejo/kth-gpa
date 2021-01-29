@@ -5,7 +5,7 @@
     "content_scripts": [
         {
             "matches": ["https://www.student.ladok.se/*"],
-            "css": ["style.css"],
+            "css": ["style.css", "font-awesome.min.css"],
             "js": ["arrive.min.js", "contentScript.js"]
         }
     ],

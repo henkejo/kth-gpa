@@ -91,12 +91,51 @@ function addCourse () {
         includeHeaderCell.append(includeHeader);
         headerRow.appendChild(includeHeaderCell);
 
+        headerRow.appendChild(document.createElement("td"));
     let dataRow = document.createElement("tr");
-        let ccDataCell = document.createElement("td");
-        let ccData = document.createElement("input");
-        ccData.type = "text";
-        ccDataCell.append(ccData);
-        dataRow.appendChild(ccDataCell);
+        let ccCell = document.createElement("td");
+        let ccInput = document.createElement("input");
+        ccInput.id = "ccData";
+        ccInput.type = "text";
+        ccCell.append(ccInput);
+        dataRow.appendChild(ccCell);
+
+        let creditsCell = document.createElement("td");
+        let creditsInput = document.createElement("input");
+        creditsInput.id = "creditsData";
+        creditsInput.type = "text";
+        creditsCell.append(creditsInput);
+        dataRow.appendChild(creditsCell);
+
+        let gradeCell = document.createElement("td");
+        let gradeInput = document.createElement("select");
+        const grades = ["A", "B", "C", "D", "E", "F"];
+        grades.forEach(grade => {
+            let option = document.createElement("option");
+            option.value = grade;
+            option.innerHTML = grade;
+            gradeInput.appendChild(option);
+        });
+        gradeInput.id = "gradeInput";
+        gradeInput.type = "text";
+        gradeCell.append(gradeInput);
+        dataRow.appendChild(gradeCell);
+
+        let includeCell = document.createElement("td");
+        let includeInput = document.createElement("input");
+        includeInput.type = "checkbox";
+        includeCell.append(includeInput);
+        dataRow.appendChild(includeCell);
+
+        let removeCell = document.createElement("td");
+        let remove = document.createElement("button");
+        remove.classList.add("fa-trash");
+        remove.classList.add("fa");
+        remove.addEventListener("click", () => {
+            otherCoursesListdiv.removeChild(otherCourseBox);
+        });
+        removeCell.appendChild(remove);
+        dataRow.appendChild(removeCell);
 
     table.appendChild(headerRow);
     table.appendChild(dataRow);

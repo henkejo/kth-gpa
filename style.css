@@ -31,3 +31,26 @@
     margin-top: 20px;
     margin-bottom: 10px;
 }
+.gpa-other-course {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.gpa-other-course p{
+    font-size: 10px;
+}
+.gpa-other-course input{
+    margin-right: 5px;
+}
+#ccData {
+    width: 80px;
+    margin-right: 10px;
+}
+#creditsData {
+    width: 60px;
+}
+#gradeInput {
+    width: 40px;
+}
+.gpa-other-course input[type=checkbox]{
+    margin-left: 15px;
+}
