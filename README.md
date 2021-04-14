@@ -1,4 +1,4 @@
-# kth-gpa 
+# kth-gpa
 A GPA-calculating Chrome extension for KTH-students.🎓
 
 The extension works through adding elements onto the "Completed education" page of the Ladok system.
@@ -6,6 +6,4 @@ The GPA is calculated according to [information from KTH](https://translate.goog
 
 
 ## Status
-Barely usable at this point.
-
-If you really want to use it, clone the repo and [load the files as an unpacked extension](https://developer.chrome.com/extensions/getstarted).
+### Not functional anymore because of a UI revamp of Ladok.
